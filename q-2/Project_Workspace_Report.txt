@@ -1,0 +1,30 @@
+Question 2 - Secure Project Workspace Setup
+========================================
+
+1. Workspace creation
+Command: mkdir -p secure_workspace/{docs,src,logs}
+Observed result: A secure workspace structure was created with docs, src, and logs folders.
+
+2. Files created
+Command: touch secure_workspace/docs/plan.txt secure_workspace/src/app.txt secure_workspace/logs/activity.log
+Observed result: Three project files were created inside the workspace.
+
+3. Permissions before and after modification
+Initial permissions were wide open because the default umask was 0022 and files were created with default mode values.
+After applying the required permissions:
+- secure_workspace: 750
+- secure_workspace/docs: 750
+- secure_workspace/src: 750
+- secure_workspace/logs: 750
+- plan.txt, app.txt, activity.log: 640
+
+4. Ownership details
+Command: stat -c '%n %a %U %G' ...
+Observed result: All files and directories are owned by user codespace and group codespace.
+
+5. Umask value
+Command: umask
+Observed output: 0022
+
+6. Protection explanation
+The directory permissions of 750 prevent other users from entering the workspace, while the files use 640 so only the owner can read and write them and group members can read them. This limits access to sensitive project data and reduces the chance of accidental modification.

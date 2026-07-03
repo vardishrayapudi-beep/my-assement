@@ -1,0 +1,32 @@
+Question 4 - File Access and I/O Investigation
+========================================
+
+1. Open file observation
+Command: lsof -p $$ | grep app.log
+Observed result: The current shell had file descriptor 3 open for app.log.
+
+2. File descriptor observations
+Command: ls -l /proc/$$/fd | grep -E 'app.log|0 ->|1 ->|2 ->|3 ->|6 ->'
+Observed result:
+- fd 0 points to /dev/pts/*
+- fd 1 points to /dev/pts/*
+- fd 2 points to /dev/pts/*
+- fd 3 points to the opened app.log file
+- fd 6 points to /dev/null
+
+3. Redirection results
+Command: ls -l > stdout.txt
+Observed result: The directory listing was redirected to stdout.txt.
+
+Command: ls /not_a_real_path 2> stderr.txt
+Observed result: The error message was redirected to stderr.txt.
+
+Command: (ls -l && ls /not_a_real_path) > combined.txt 2>&1
+Observed result: Both output streams were combined into combined.txt.
+
+4. Resource limits
+Command: ulimit -a
+Observed result: The shell reported unlimited file size, CPU time, and process limits, with open files set to 524288.
+
+5. Conclusion
+Linux uses file descriptors to track open files and streams. Standard input, output, and error are represented by descriptors 0, 1, and 2, while redirection operators control how data is sent to files or terminals.

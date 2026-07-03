@@ -1,0 +1,28 @@
+Question 5 - Storage Health Assessment and Documentation
+========================================
+
+1. Available storage devices
+Command: lsblk
+Observed result: The environment contains several block devices including loop devices, a 45G disk, a 30G disk, and a 512G disk.
+
+2. Mounted file systems
+Command: mount | head -5
+Observed result: The root filesystem is mounted as overlay, and other temporary and system mount points are present.
+
+3. Disk usage statistics
+Command: df -h
+Observed result:
+- / uses 32G total with 21G available.
+- /tmp uses 44G total with 40G available.
+- /workspaces uses 32G total with 21G available.
+
+4. Inode utilization
+Command: df -i
+Observed result:
+- / uses 10% inode utilization.
+- /tmp uses 1% inode utilization.
+- /workspaces uses 10% inode utilization.
+
+5. Observations and recommendations
+The current storage layout shows sufficient free space for the container environment. The main recommendation is to keep an eye on / and /workspaces usage over time and remove unnecessary temporary or cache files when usage rises. Inode usage is still low, so there is no immediate inode pressure.
+

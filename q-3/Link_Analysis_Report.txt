@@ -1,0 +1,29 @@
+Question 3 - File System and Link Analysis
+========================================
+
+1. Link creation
+Command: ln original.txt hardlink.txt
+Command: ln -s original.txt symlink.txt
+Observed result: A hard link and a symbolic link were created successfully.
+
+2. Inode information
+Command: ls -li original.txt hardlink.txt symlink.txt
+Observed output:
+1310751 -rw-rw-rw- 2 codespace codespace original.txt
+1310751 -rw-rw-rw- 2 codespace codespace hardlink.txt
+1310806 lrwxrwxrwx 1 codespace codespace symlink.txt -> original.txt
+
+3. Metadata collected
+Command: stat original.txt hardlink.txt symlink.txt
+Observed result:
+- original.txt and hardlink.txt share the same inode number 1310751 and link count 2.
+- symlink.txt has a different inode number 1310806 and is treated as a link file to another file.
+
+4. Effect of deleting the original file
+Command: rm original.txt
+Observed result:
+- hardlink.txt still worked and displayed the file content.
+- symlink.txt stopped working and produced 'No such file or directory'.
+
+5. Conclusion
+A hard link points to the same inode as the original file, so it remains usable after the original file is deleted. A symbolic link stores the path to the target and breaks when the target is removed.
